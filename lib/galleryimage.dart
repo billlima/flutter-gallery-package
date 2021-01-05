@@ -8,10 +8,11 @@ import './gallery_image_view_wrapper.dart';
 import './util.dart';
 
 class GalleryImage extends StatefulWidget {
-  final List<String> imageUrls;
+  final List<List<String>> imageUrlsAndDescriptions;
   final String titileGallery;
 
-  const GalleryImage({@required this.imageUrls, this.titileGallery});
+  const GalleryImage(
+      {@required this.imageUrlsAndDescriptions, this.titileGallery});
   @override
   _GalleryImageState createState() => _GalleryImageState();
 }
@@ -20,7 +21,7 @@ class _GalleryImageState extends State<GalleryImage> {
   List<GalleryItemModel> galleryItems = <GalleryItemModel>[];
   @override
   void initState() {
-    buildItemsList(widget.imageUrls);
+    buildItemsList(widget.imageUrlsAndDescriptions);
     super.initState();
   }
 
@@ -100,11 +101,11 @@ class _GalleryImageState extends State<GalleryImage> {
   }
 
 // clear and build list
-  buildItemsList(List<String> items) {
+  buildItemsList(List<List<String>> items) {
     galleryItems.clear();
     items.forEach((item) {
       galleryItems.add(
-        GalleryItemModel(id: item, imageUrl: item),
+        GalleryItemModel(id: item[0], imageUrl: item[0], description: item[1]),
       );
     });
   }

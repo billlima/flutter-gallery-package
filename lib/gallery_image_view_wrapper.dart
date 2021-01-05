@@ -32,28 +32,54 @@ class GalleryImageViewWrapper extends StatefulWidget {
 
 class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   int currentIndex;
+  var currentDescription;
   final minScale = PhotoViewComputedScale.contained * 0.8;
   final maxScale = PhotoViewComputedScale.covered * 8;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentDescription = widget.galleryItems[widget.initialIndex].description;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.titileGallery ?? "Galley"),
       ),
-      body: Container(
-        decoration: widget.backgroundDecoration,
-        constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height,
-        ),
-        child: PhotoViewGallery.builder(
-          scrollPhysics: const BouncingScrollPhysics(),
-          builder: _buildImage,
-          itemCount: widget.galleryItems.length,
-          loadingBuilder: widget.loadingBuilder,
-          backgroundDecoration: widget.backgroundDecoration,
-          pageController: widget.pageController,
-          scrollDirection: widget.scrollDirection,
-        ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(
+            decoration: widget.backgroundDecoration,
+            constraints: BoxConstraints.expand(
+              height: MediaQuery.of(context).size.height,
+            ),
+            child: PhotoViewGallery.builder(
+              scrollPhysics: const BouncingScrollPhysics(),
+              builder: _buildImage,
+              itemCount: widget.galleryItems.length,
+              loadingBuilder: widget.loadingBuilder,
+              backgroundDecoration: widget.backgroundDecoration,
+              pageController: widget.pageController,
+              scrollDirection: widget.scrollDirection,
+              onPageChanged: (index) {
+                setState(() {
+                  currentDescription = widget.galleryItems[index].description;
+                });
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
+            child: Text(
+              currentDescription ?? '',
+              style: TextStyle(color: Colors.white, fontSize: 16.0),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -61,6 +87,7 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
 // build image with zooming
   PhotoViewGalleryPageOptions _buildImage(BuildContext context, int index) {
     final GalleryItemModel item = widget.galleryItems[index];
+
     return PhotoViewGalleryPageOptions.customChild(
       child: Container(
         child: CachedNetworkImage(
