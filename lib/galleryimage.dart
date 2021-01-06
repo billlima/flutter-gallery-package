@@ -25,34 +25,99 @@ class _GalleryImageState extends State<GalleryImage> {
     super.initState();
   }
 
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(10),
-        child: galleryItems.isEmpty
-            ? getEmptyWidget()
-            : GridView.builder(
+    switch (galleryItems.length) {
+      case 0:
+        return getEmptyWidget();
+      case 1:
+        return GalleryItemThumbnail(
+          galleryItem: galleryItems[0],
+          onTap: () {
+            openImageFullScreen(0);
+          },
+        );
+      case 2:
+      case 3:
+        return buildOneLineGrid();
+      default:
+        return buildFourOrMore();
+    }
+  }
+
+  Widget buildFourOrMore() {
+    var otherImages = [];
+
+    // We want to skip the index zero
+    for (var i = 1; i < galleryItems.length; i++) {
+      otherImages.add(galleryItems[i]);
+    }
+
+    return Container(
+      child: Column(
+        children: [
+          GalleryItemThumbnail(
+            galleryItem: galleryItems[0],
+            onTap: () {
+              openImageFullScreen(0);
+            },
+            height: 160.0,
+            width: double.maxFinite,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            child: GridView.builder(
                 primary: false,
-                itemCount: galleryItems.length > 3 ? 3 : galleryItems.length,
+                itemCount: 3,
                 padding: EdgeInsets.all(0),
                 semanticChildCount: 1,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3, mainAxisSpacing: 0, crossAxisSpacing: 5),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
+                  var itemRealIndex = galleryItems.indexOf(otherImages[index]);
+
                   return ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      // borderRadius: BorderRadius.all(Radius.circular(8)),
                       // if have less than 4 image w build GalleryItemThumbnail
                       // if have mor than 4 build image number 3 with number for other images
-                      child: galleryItems.length > 3 && index == 2
-                          ? buildImageNumbers(index)
+                      child: otherImages.length > 3 && index == 2
+                          ? buildImageNumbers(itemRealIndex)
                           : GalleryItemThumbnail(
-                              galleryItem: galleryItems[index],
+                              galleryItem: otherImages[index],
                               onTap: () {
-                                openImageFullScreen(index);
+                                openImageFullScreen(itemRealIndex);
                               },
                             ));
-                }));
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildOneLineGrid() {
+    return Container(
+      child: GridView.builder(
+          primary: false,
+          itemCount: galleryItems.length,
+          padding: EdgeInsets.all(0),
+          semanticChildCount: 1,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: galleryItems.length,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 5),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return galleryItems.length > 3 && index == 2
+                ? buildImageNumbers(index)
+                : GalleryItemThumbnail(
+                    galleryItem: galleryItems[index],
+                    onTap: () {
+                      openImageFullScreen(index);
+                    },
+                  );
+          }),
+    );
   }
 
 // build image with number for other images

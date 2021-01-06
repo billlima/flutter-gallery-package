@@ -46,9 +46,6 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.titileGallery ?? "Galley"),
-      ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [

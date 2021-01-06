@@ -5,12 +5,24 @@ import './gallery_Item_model.dart';
 
 // to show image in Row
 class GalleryItemThumbnail extends StatelessWidget {
-  const GalleryItemThumbnail({Key key, this.galleryItem, this.onTap})
+  const GalleryItemThumbnail(
+      {Key key,
+      this.galleryItem,
+      this.width,
+      this.height,
+      this.fit,
+      this.onTap})
       : super(key: key);
 
   final GalleryItemModel galleryItem;
 
   final GestureTapCallback onTap;
+
+  final double height;
+
+  final double width;
+
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +32,10 @@ class GalleryItemThumbnail extends StatelessWidget {
         child: Hero(
           tag: galleryItem.id,
           child: CachedNetworkImage(
-            fit: BoxFit.cover,
+            fit: fit != null ? fit : BoxFit.cover,
             imageUrl: galleryItem.imageUrl,
-            height: 100.0,
+            width: width,
+            height: height,
             placeholder: (context, url) =>
                 Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => Icon(Icons.error),
