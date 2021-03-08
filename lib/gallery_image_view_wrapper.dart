@@ -5,6 +5,8 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 import './gallery_Item_model.dart';
 
+import 'dart:io' show Platform;
+
 // to view image in full screen
 class GalleryImageViewWrapper extends StatefulWidget {
   final LoadingBuilder loadingBuilder;
@@ -47,35 +49,53 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.topLeft,
         children: [
-          Container(
-            decoration: widget.backgroundDecoration,
-            constraints: BoxConstraints.expand(
-              height: MediaQuery.of(context).size.height,
-            ),
-            child: PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: _buildImage,
-              itemCount: widget.galleryItems.length,
-              loadingBuilder: widget.loadingBuilder,
-              backgroundDecoration: widget.backgroundDecoration,
-              pageController: widget.pageController,
-              scrollDirection: widget.scrollDirection,
-              onPageChanged: (index) {
-                setState(() {
-                  currentDescription = widget.galleryItems[index].description;
-                });
-              },
-            ),
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                decoration: widget.backgroundDecoration,
+                constraints: BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.height,
+                ),
+                child: PhotoViewGallery.builder(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  builder: _buildImage,
+                  itemCount: widget.galleryItems.length,
+                  loadingBuilder: widget.loadingBuilder,
+                  backgroundDecoration: widget.backgroundDecoration,
+                  pageController: widget.pageController,
+                  scrollDirection: widget.scrollDirection,
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentDescription =
+                          widget.galleryItems[index].description;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
+                child: Text(
+                  currentDescription ?? '',
+                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+                ),
+              )
+            ],
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
-            child: Text(
-              currentDescription ?? '',
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
-          )
+            margin: EdgeInsets.only(top: kToolbarHeight * 0.5),
+            child: IconButton(
+                icon: Icon(
+                    Platform.isAndroid
+                        ? Icons.arrow_back
+                        : Icons.arrow_back_ios,
+                    color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ),
         ],
       ),
     );
