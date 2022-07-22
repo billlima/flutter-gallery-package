@@ -1,5 +1,8 @@
 library galleryimage;
 
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import './gallery_Item_model.dart';
@@ -8,11 +11,13 @@ import './gallery_image_view_wrapper.dart';
 import './util.dart';
 
 class GalleryImage extends StatefulWidget {
-  final List<List<String>> imageUrlsAndDescriptions;
-  final String titileGallery;
+  final List<GalleryItemModel> images;
+  final String? titileGallery;
 
-  const GalleryImage(
-      {@required this.imageUrlsAndDescriptions, this.titileGallery});
+  const GalleryImage({
+    required this.images, 
+    this.titileGallery
+  });
   @override
   _GalleryImageState createState() => _GalleryImageState();
 }
@@ -21,7 +26,13 @@ class _GalleryImageState extends State<GalleryImage> {
   List<GalleryItemModel> galleryItems = <GalleryItemModel>[];
   @override
   void initState() {
-    buildItemsList(widget.imageUrlsAndDescriptions);
+    galleryItems = widget.images.mapIndexed((idx, element) {
+      if (element.id == null) {
+        element.id = "${element.imageUrl}-${new Random().nextDouble()}";
+      }
+      return element;
+    }).toList();
+    
     super.initState();
   }
 
@@ -163,15 +174,5 @@ class _GalleryImageState extends State<GalleryImage> {
         ),
       ),
     );
-  }
-
-// clear and build list
-  buildItemsList(List<List<String>> items) {
-    galleryItems.clear();
-    items.forEach((item) {
-      galleryItems.add(
-        GalleryItemModel(id: item[0], imageUrl: item[0], description: item[1]),
-      );
-    });
   }
 }
