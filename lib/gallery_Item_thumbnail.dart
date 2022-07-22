@@ -1,28 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 import './gallery_Item_model.dart';
 
 // to show image in Row
 class GalleryItemThumbnail extends StatelessWidget {
-  const GalleryItemThumbnail(
-      {Key key,
-      this.galleryItem,
-      this.width,
-      this.height,
-      this.fit,
-      this.onTap})
-      : super(key: key);
+  const GalleryItemThumbnail({
+    Key? key,
+    required this.galleryItem,
+    this.width,
+    this.height,
+    this.fit,
+    this.onTap
+  })
+    : super(key: key);
 
   final GalleryItemModel galleryItem;
-
-  final GestureTapCallback onTap;
-
-  final double height;
-
-  final double width;
-
-  final BoxFit fit;
+  final GestureTapCallback? onTap;
+  final double? height;
+  final double? width;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +27,10 @@ class GalleryItemThumbnail extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Hero(
-          tag: galleryItem.id,
+          tag: galleryItem.id!,
           child: CachedNetworkImage(
             fit: fit != null ? fit : BoxFit.cover,
-            imageUrl: galleryItem.imageUrl,
+            imageUrl: galleryItem.imageUrlSmall ?? galleryItem.imageUrl,
             width: width,
             height: height,
             placeholder: (context, url) =>

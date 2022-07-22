@@ -1,28 +1,28 @@
-import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import './gallery_Item_model.dart';
 
-import 'dart:io' show Platform;
-
 // to view image in full screen
 class GalleryImageViewWrapper extends StatefulWidget {
-  final LoadingBuilder loadingBuilder;
-  final Decoration backgroundDecoration;
-  final int initialIndex;
-  final PageController pageController;
   final List<GalleryItemModel> galleryItems;
+  final LoadingBuilder? loadingBuilder;
+  final BoxDecoration? backgroundDecoration;
+  final int initialIndex;
+  final PageController? pageController;
   final Axis scrollDirection;
-  final String titileGallery;
+  final String? titileGallery;
 
   GalleryImageViewWrapper({
+    required this.galleryItems,
     this.loadingBuilder,
     this.titileGallery,
     this.backgroundDecoration,
-    this.initialIndex,
-    @required this.galleryItems,
+    required this.initialIndex,
     this.scrollDirection = Axis.horizontal,
   }) : pageController = PageController(initialPage: initialIndex);
 
@@ -33,7 +33,7 @@ class GalleryImageViewWrapper extends StatefulWidget {
 }
 
 class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
-  int currentIndex;
+  int? currentIndex;
   var currentDescription;
   final minScale = PhotoViewComputedScale.contained * 0.8;
   final maxScale = PhotoViewComputedScale.covered * 8;
@@ -117,7 +117,7 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: minScale,
       maxScale: maxScale,
-      heroAttributes: PhotoViewHeroAttributes(tag: item.id),
+      heroAttributes: PhotoViewHeroAttributes(tag: item.id!),
     );
   }
 }

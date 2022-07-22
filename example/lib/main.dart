@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:galleryimage/gallery_Item_model.dart';
 import 'package:galleryimage/galleryimage.dart';
 
 void main() {
@@ -35,13 +36,21 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             Text("Tap to show image"),
             GalleryImage(
-              imageUrls: [
-                "https://cosmosmagazine.com/wp-content/uploads/2020/02/191010_nature.jpg",
-                "https://scx2.b-cdn.net/gfx/news/hires/2019/2-nature.jpg",
-                "https://isha.sadhguru.org/blog/wp-content/uploads/2016/05/natures-temples.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/7/77/Big_Nature_%28155420955%29.jpeg",
-                "https://s23574.pcdn.co/wp-content/uploads/Singular-1140x703.jpg",
-                "https://www.expatica.com/app/uploads/sites/9/2017/06/Lake-Oeschinen-1200x675.jpg"
+              images: [
+                GalleryItemModel(
+                  imageUrl: "https://cosmosmagazine.com/wp-content/uploads/2020/02/191010_nature.jpg",
+                  imageUrlSmall: "https://content.solsea.io/files/thumbnail/1639497931091-499911050.jpg",
+                  description: 'With thumbnail'
+                ),
+                GalleryItemModel(
+                  imageUrl: "https://scx2.b-cdn.net/gfx/news/hires/2019/2-nature.jpg",
+                  imageUrlSmall: "https://w7.pngwing.com/pngs/653/745/png-transparent-green-trees-under-cloudy-sky-illustration-natural-landscape-euclidean-nature-landscape-element-leaf-branch-landscape-thumbnail.png",
+                  description: 'With thumbnail'
+                ),
+                GalleryItemModel(imageUrl: "https://isha.sadhguru.org/blog/wp-content/uploads/2016/05/natures-temples.jpg"),
+                GalleryItemModel(imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/77/Big_Nature_%28155420955%29.jpeg"),
+                GalleryItemModel(imageUrl: "https://ebm.com.br/wp-content/uploads/2021/03/integracao-com-natureza.jpg"),
+                GalleryItemModel(imageUrl: "https://blog.serraimperial.com/wp-content/uploads/2019/11/O-que-%C3%A9-Ecoturismo-e-como-aproveitar-um-dia-em-meio-a-Natureza.jpg"),
               ],
             ),
           ],

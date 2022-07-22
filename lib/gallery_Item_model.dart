@@ -1,9 +1,13 @@
 class GalleryItemModel {
-  GalleryItemModel({this.id, this.imageUrl, this.description});
-// id image (image url) to use in hero animation
-  final String id;
-  // image url
+  GalleryItemModel({
+    this.id, 
+    required this.imageUrl, 
+    this.description,
+    this.imageUrlSmall, 
+  });
+  
+  String? id; //to use in hero animation
   final String imageUrl;
-
-  final String description;
+  final String? description;
+  final String? imageUrlSmall;
 }
